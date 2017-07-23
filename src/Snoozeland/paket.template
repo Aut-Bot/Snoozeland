@@ -1,0 +1,25 @@
+type project
+title
+    Snoozeland
+owners
+    William Berry @williamberryiii
+authors 
+    William Berry @williamberryiii
+projectUrl
+    https://github.com/Aut-Bot/Snoozeland/
+iconUrl
+    https://raw.githubusercontent.com/Aut-Bot/Snoozeland/master/docs/files/img/logo.png
+licenseUrl
+    https://github.com/Aut-Bot/Snoozeland/blob/master/LICENSE.txt
+requireLicenseAcceptance
+    false
+copyright
+    Copyright 2015
+tags
+    iot fsharp snoozeland raspberrypi gpio ir audio environment
+summary
+    Snoozeland room scene controller for raspberry pi written in F#
+description
+    Description not set
+
+

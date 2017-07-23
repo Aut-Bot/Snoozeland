@@ -1,0 +1,47 @@
+configuration:
+  emitterStartSequence: A1F1
+  devices: 
+    - name : deviceId
+      commands: 
+      - name: powerOn
+        commandString: 00FF45
+      - name: timer
+        commandString: 00FF46
+      - name: powerOff
+        commandString: 00FF47
+      - name: red
+        commandString: 00FF44
+      - name: green
+        commandString: 00FF40
+      - name: blue
+        commandString: 00FF43
+      - name: yellow
+        commandString: 00FF07
+      - name: yellow-green
+        commandString: 00FF15
+      - name: green-yellow
+        commandString: 00FF09
+      - name: blue-green
+        commandString: 00FF16
+      - name: light-blue
+        commandString: 00FF19
+      - name: green-blue
+        commandString: 00FF0D
+      - name: indigo
+        commandString: 00FF0C
+      - name: violet
+        commandString: 00FF18
+      - name: pink
+        commandString: 00FF5E
+      - name: white
+        commandString: 00FF08
+      - name: fade
+        commandString: 00FF1C
+      - name: jump
+        commandString: 00FF5A
+      - name: reset
+        commandString: 00FF42
+      - name: dim
+        commandString: 00FF52
+      - name: brighter
+        commandString: 00FF4A
