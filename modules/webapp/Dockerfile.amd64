@@ -1,0 +1,58 @@
+##############################################################
+# Do build env setup and app build
+##############################################################
+
+FROM microsoft/dotnet:2.1-sdk AS build-env
+
+# Prep for Mono Install 
+RUN apt-get update && apt-get install -y apt-transport-https dirmngr
+
+# Add keys and sources lists
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" \
+    | tee /etc/apt/sources.list.d/yarn.list
+
+# gpg via apt-key has an issue where it tries to output via /dev/tty so filp the flag
+RUN apt-key adv --no-tty --keyserver hkp://keyserver.ubuntu.com:80 \
+    --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+RUN echo "deb https://download.mono-project.com/repo/debian stable-stretch main" \
+    | tee /etc/apt/sources.list.d/mono-official-stable.list
+
+# Install node, 7zip, yarn & mono
+RUN apt-get update && apt-get install -y nodejs p7zip-full yarn mono-devel
+
+WORKDIR /app
+COPY . ./
+
+# Install fake
+RUN dotnet tool install fake-cli -g
+
+# add dotnet tools to path to pick up fake installation 
+ENV PATH="/root/.dotnet/tools:${PATH}"
+
+# execute the bundle target
+RUN fake build --target bundle 
+
+##############################################################
+# Do final image build and copy assets over
+##############################################################
+
+FROM microsoft/dotnet:2.1-aspnetcore-runtime
+
+# Install latest Node
+RUN apt-get update && apt-get install -y apt-transport-https dirmngr
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash
+RUN apt-get update && apt-get install -y nodejs
+
+COPY --from=build-env /app/deploy /app
+WORKDIR /app/Server
+EXPOSE 8085
+
+# Create container user so we're not running as root
+RUN useradd -ms /bin/bash app \
+    && chown -R app:app /app \
+    && chmod 755 /app
+USER app
+
+ENTRYPOINT [ "dotnet", "Server.dll" ]

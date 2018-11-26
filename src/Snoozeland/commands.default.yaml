@@ -1,7 +1,0 @@
-configuration:
-  emitterStartSequence: A1F1
-  devices: 
-    - name : deviceId
-      commands: 
-      - name : startSequence
-        commandString: A1F1
